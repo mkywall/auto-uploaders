@@ -1,0 +1,43 @@
+substitutions:
+  _IMAGE_PATH: "us-central1-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${BRANCH_NAME}"
+  _SERVICE_NAME: 'auto-uploaders-${BRANCH_NAME}'
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [-c, 'docker pull ${_IMAGE_PATH}:latest || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [-c, 'docker build --build-arg githash=$(git rev-parse HEAD) -t ${_IMAGE_PATH}:latest --cache-from ${_IMAGE_PATH}:latest .' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE_PATH}:latest' ]
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:stable'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image'
+      - '${_IMAGE_PATH}'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--memory'
+      - '1Gi'
+      - '--cpu'
+      - '2'
+      - '--concurrency'
+      - '2'
+      - '--timeout'
+      - '300'
+      - '--min-instances'
+      - '1'
+      - '--set-env-vars'
+      - >-
+        CRUCIBLE_API_URL=https://crucible.lbl.gov/api/v2,
+      - '--set-secrets'
+      - >-
+        CRUCIBLE_API_KEY=crucible_admin_apikey:latest,
+      - '--allow-unauthenticated'
+
+timeout: 600s

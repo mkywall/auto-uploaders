@@ -1,0 +1,8 @@
+pyyaml
+git+https://github.com/MolecularFoundryCrucible/nano-crucible@dev
+Flask
+gunicorn
+cloudevents
+requests
+google-cloud-secret-manager
+h5py
