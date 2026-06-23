@@ -6,6 +6,11 @@ WORKDIR /root/
 RUN apt-get update && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 
+# files
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
+
 # uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV UV_NO_DEV=1
@@ -14,9 +19,6 @@ RUN uv sync
 ARG githash
 ENV GITHASH=$githash
 
-ENV APP_HOME /app
-WORKDIR $APP_HOME
-COPY . ./
 
 
 # Run app
