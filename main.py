@@ -22,6 +22,7 @@ EXCLUDE_FILES_FORMATS = [".pyc", ".pyo", ".pyd", ".db", ".sqlite",".ini"]
 SCOPEFOUNDRY_INSTRUMENTS = ["aldbot", "hip_microscope", "qspleem", "spinbot", 'supracl_microscope']
 
 # logs
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -71,9 +72,8 @@ def index():
         return message, 200
     
     except Exception as error:
-        message = f"{dsfile=}, {event['id']=}, message: failed with {error=}"
-        logger.info(message)
-        return message, 500
+        logger.exception(f"{dsfile=}, {event['id']=}, processing failed")
+        return f"failed with {error=}", 500
 
 
 if __name__ == "__main__":

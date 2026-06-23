@@ -34,10 +34,16 @@ steps:
       - '1'
       - '--set-env-vars'
       - >-
-        CRUCIBLE_API_URL=https://crucible.lbl.gov/api/v2,
+        CRUCIBLE_API_URL=https://crucible.lbl.gov/api/v2
       - '--set-secrets'
       - >-
-        CRUCIBLE_API_KEY=crucible_admin_apikey:latest,
+        CRUCIBLE_API_KEY=crucible_admin_apikey:latest
+      - '--service-account'
+      - 'auto-uploaders-cloudrun-104@mf-crucible.iam.gserviceaccount.com'
+      - '--add-volume'
+      - 'name=gcs-data,type=cloud-storage,bucket=crucible-uploads,readonly=true'
+      - '--add-volume-mount'
+      - 'volume=gcs-data,mount-path=/gcs/mnt'
       - '--allow-unauthenticated'
 
 timeout: 600s
