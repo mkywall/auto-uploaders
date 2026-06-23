@@ -64,7 +64,7 @@ def index():
 
         logger.info('creating dataset...')
         base_ds = Dataset(unique_id = parsed_dsid)
-        new_ds = client.dataset.create(base_ds, files = [cloudpath])
+        new_ds = client.datasets.create(base_ds, files = [cloudpath])
         dsid = new_ds['created_record']['unique_id']
 
         message = f"{dsfile=}, {event['id']=}, message: dataset created with {dsid=}"
