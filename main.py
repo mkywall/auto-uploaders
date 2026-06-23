@@ -36,8 +36,10 @@ def index():
 
     # Run the process you want on event detection
     dsfile = event.data.get('name')
-
+    logger.info(f'received {dsfile=}')
     instrument = dsfile.split("/")[0]
+    logger.info(f'instrument parsed as: {instrument}')
+
     if any([dsfile.endswith(fmt) for fmt in EXCLUDE_FILES_FORMATS]):
         message = f"File {dsfile} is excluded from processing due to its format."
         logger.warning(message)
@@ -54,11 +56,12 @@ def index():
 
         if dsfile.endswith(".h5") and instrument in SCOPEFOUNDRY_INSTRUMENTS:
             # these instruments need to pass in the unique id
+            logger.info('extracting unique_id...')
             with h5py.File(cloudpath, 'r') as h5file:
                 parsed_dsid = h5file.attrs.get('unique_id')
             logger.info(f'# ============= {parsed_dsid=}')
 
-
+        logger.info('creating dataset...')
         base_ds = Dataset(unique_id = parsed_dsid)
         new_ds = client.dataset.create(base_ds, files = [cloudpath])
         dsid = new_ds['created_record']['unique_id']
