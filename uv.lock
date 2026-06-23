@@ -50,7 +50,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cloudevents", specifier = ">=2.2.0" },
+    { name = "cloudevents", specifier = "==1.10.1" },
     { name = "flask", specifier = ">=3.1.3" },
     { name = "google-cloud-secret-manager", specifier = ">=2.29.0" },
     { name = "gunicorn", specifier = ">=26.0.0" },
@@ -194,15 +194,14 @@ wheels = [
 
 [[package]]
 name = "cloudevents"
-version = "2.2.0"
+version = "1.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "deprecation" },
-    { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/45/fe/3bae2187abea2682a1079c5618e45baf4c9df7e35017e1b9b7940955db59/cloudevents-2.2.0.tar.gz", hash = "sha256:fc52440a1fecde882b3b745361e1c7dd4e044e71a6b719cfec2e2c0aa1a19fa3", size = 48380, upload-time = "2026-06-11T14:10:02.339Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/2f/c606ce74c9ec25ffa6c8dcdff3e4a9fd6db562d546430e98c739345b8189/cloudevents-1.10.1.tar.gz", hash = "sha256:984d90aa114deeb1c37ceecf78f9dc9d56f5866cf10b45142a23c84d22621ac9", size = 33480, upload-time = "2023-10-30T05:46:04.627Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d0/d4/901b17ea39f4f1125fc92529cb842896309075406a78e13a7c544f0c5600/cloudevents-2.2.0-py3-none-any.whl", hash = "sha256:9ff8adff01b997d251d0fb54076557daa9906330e16afc1712a6447122f8f7a4", size = 98239, upload-time = "2026-06-11T14:10:01.059Z" },
+    { url = "https://files.pythonhosted.org/packages/2f/68/f2baa380844c108a9f7788a139200839b067d1b185c5b0e4bee04d20768f/cloudevents-1.10.1-py3-none-any.whl", hash = "sha256:832f1e3cca0887ab8f993cd2c0645a2155e73792f740d86f7b4bc8620a10d50e", size = 55047, upload-time = "2023-10-30T05:46:02.869Z" },
 ]
 
 [[package]]

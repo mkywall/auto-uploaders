@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "cloudevents>=2.2.0",
+    "cloudevents==1.10.1",
     "flask>=3.1.3",
     "google-cloud-secret-manager>=2.29.0",
     "gunicorn>=26.0.0",
