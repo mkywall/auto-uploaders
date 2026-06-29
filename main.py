@@ -4,6 +4,7 @@ Copyright 2020 Google, LLC.
 # basics
 import os
 import h5py
+import shutil
 import logging
 from cloudevents.http import from_http
 from flask import Flask, request
@@ -62,6 +63,12 @@ def index():
                 parsed_dsid = h5file.attrs.get('unique_id')
             logger.info(f'# ============= {parsed_dsid=}')
 
+        if instrument == 'ALS-BL12012' and not dsfile.endswith(".zip"):
+            message = f'Skipping unzipped RGA file: {dsfile=}, {event['id']=}'
+            logger.info(message)
+            return message, 200
+            
+
         logger.info('creating dataset...')
         base_ds = Dataset(unique_id = parsed_dsid)
         new_ds = client.datasets.create(base_ds, files_to_upload = [cloudpath])
@@ -72,8 +79,9 @@ def index():
         return message, 200
     
     except Exception as error:
-        logger.exception(f"{dsfile=}, {event['id']=}, processing failed")
-        return f"failed with {error=}", 500
+        message = f"{dsfile=}, {event['id']=}, failed with {error=}"
+        logger.exception(message)
+        return message, 500
 
 
 if __name__ == "__main__":
