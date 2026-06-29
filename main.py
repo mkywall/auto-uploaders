@@ -4,8 +4,9 @@ Copyright 2020 Google, LLC.
 # basics
 import os
 import h5py
-import shutil
+import mfid
 import logging
+from pathlib import Path
 from cloudevents.http import from_http
 from flask import Flask, request
 
@@ -67,10 +68,24 @@ def index():
             message = f'Skipping unzipped RGA file: {dsfile=}, {event['id']=}'
             logger.info(message)
             return message, 200
-            
+        elif instrument == 'ALS-BL12012':
+            new_rga_dsname = Path(dsfile).stem
+            found_ds = client.datasets.list(dataset_name = new_rga_dsname)
+            if len(found_ds) > 0:
+                dsid = found_ds[-1]['unique_id']
+            else:
+                dsid, _ = mfid.mfid()
+                
+            base_ds = Dataset(unique_id = dsid,
+                        dataset_name = new_rga_dsname,
+                        instrument_name = "ALS-BL12012",
+                        measurement = "automated_RGA_TEY_batch_run",
+                        data_type = "automated_RGA_TEY_batch_run",
+                        project_id = "10k_perovskites")
+        else:
+            logger.info('creating dataset...')
+            base_ds = Dataset(unique_id = parsed_dsid)
 
-        logger.info('creating dataset...')
-        base_ds = Dataset(unique_id = parsed_dsid)
         new_ds = client.datasets.create(base_ds, files_to_upload = [cloudpath])
         dsid = new_ds['created_record']['unique_id']
 
